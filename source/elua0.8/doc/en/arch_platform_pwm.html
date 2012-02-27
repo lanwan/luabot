@@ -1,0 +1,51 @@
+$$HEADER$$
+<a name="overview" /><h3>Overview</h3>
+<p>This part of the platform interface groups functions related to the PWM channel(s) of the MCU.</p>
+
+<a name="structures" /><h3>Data structures, constants and types</h3>
+<a name="pwm_operations" /><pre><code>// PWM operations
+enum
+{
+  PLATFORM_PWM_OP_START,
+  PLATFORM_PWM_OP_STOP,
+  PLATFORM_PWM_OP_SET_CLOCK,
+  PLATFORM_PWM_OP_GET_CLOCK
+} </code></pre>
+<div class="docdiv">
+<p>This enum lists all the operations that can be executed on a given PWM channel.</p>
+</div>
+
+<a name="funcs" /><h3>Functions</h3>
+<div class="docdiv">
+<a name="platform_pwm_exists" /><pre><code>int platform_pwm_exists( unsigned id );</code></pre>
+<p>Checks if the platform has the PWM channel specified as argument. Implemented in <i>src/common.c</i>, it uses the <b>NUM_PWM</b> macro that must be defined in the   platform's <b>platform_conf.h</b> file (see <a href="arch_overview.html#platforms">here</a> for details). For example:</p>   <pre class="code">#define NUM_PWM   4      <b>// The platform has 4 PWM channels</b></pre>
+<p><b>Arguments</b>: <b>id</b> - PWM channel ID</p>
+<p><b>Returns</b>: 1 if the specified PWM channel exists, 0 otherwise</p>
+
+<a name="platform_pwm_setup" /><pre><code>u32 platform_pwm_setup( unsigned id, u32 frequency, unsigned duty );</code></pre>
+<p>Sets up a PWM channel</p>
+<p><b>Arguments</b>: </p>
+<ul>
+  <li><b>id</b> - PWM channel ID</li>
+  <li><b>frequency</b> - PWM channel frequency (in hertz)</li>
+  <li><b>duty</b> - PWM channel duty cycle, specified as percent (from 0 to 100). Note that some platform don't allow the full 0<i>-100</i> duty cycle</li>
+</ul>
+<p><b>Returns</b>: The actual frequency set on the PWM channel, which might differ from the <b>frequency</b> parameter, depeding on the hardware</p>
+
+<a name="platform_pwm_op" /><pre><code>u32 platform_pwm_op( unsigned id, int op, u32 data );</code></pre>
+<p>Executes an operation on a PWM channel</p>
+<p><b>Arguments</b>: </p>
+<ul>
+  <li><b>id</b> - PWM channel ID</li>
+  <li><b>op</b> - the operation that must be executed. It can take any value from <a href="#pwm_operations">this enum</a>, as follows:   <ul>     <li><b>PLATFORM_PWM_OP_START</b>: starts PWM generation on the specified channel.</li>     <li><b>PLATFORM_PWM_OP_STOP</b>: stops PWM generation on the specified channel.</li>       <li><b>PLATFORM_PWM_OP_SET_CLOCK</b>: sets the <b>base</b> clock of the specified PWM channel (which will be used to generate the frequencies requested by          <a href="#platform_pwm_setup">platform_pwm_setup</a>) to <b>data</b> hertz.</li>     <li><b>PLATFORM_PWM_OP_GET_CLOCK</b>: get the <b>base</b> clock of the specified PWM channel.</li>   </ul></li>
+  <li><b>data</b> - when used with <b>op</b> == <b>PLATFORM_PWM_OP_SET_CLOCK</b> it is used to specify the value of the base clock. Not used with other operations.</li>
+</ul>
+<p><b>Returns</b>: </p>
+<ul>
+  <li>the actual value of the base clock when <b>op</b> == <b>PLATFORM_PWM_OP_SET_CLOCK</b>, which might be different than <b>data</b> depending on the hardware</li>
+  <li>the value of the base clock when <b>op</b> == <b>PLATFORM_PWM_OP_GET_CLOCK</b></li>
+  <li>irellevant for other operations</li>
+</ul>
+
+</div>
+$$FOOTER$$

@@ -1,0 +1,1 @@
+scons cpu=AT32UC3B0256

@@ -1,0 +1,28 @@
+$$HEADER$$
+<a name="overview" /><h3>Overview</h3>
+<p>This module contains functions for accesing the particular features of the RTC - Real Time Clock - subsystem of the STR9 family of CPUs.  This internal subsystem offers functions to keep track of a real time clock calendar, as well as some other features like alarms and auxiliar functions.   Reference manual, available from ST at <a href="http://www.st.com/mcu/devicedocs-STR912FAW44-101.html">this address</a>.</p>
+
+<a name="funcs" /><h3>Functions</h3>
+<div class="docdiv">
+<a name="str9.rtc.settime" /><pre><code>str9.rtc.settime( time )</code></pre>
+<p>Sets the Real Time Clock time to a specific time of the day.</p>
+<p><b>Arguments</b>: <b>time</b> - a string in the format 'hh:mm:ss' or a Lua table with 'hour', 'min' and 'sec' string fields.</p>
+<p><b>Returns</b>: nothing.</p>
+
+<a name="str9.rtc.gettime" /><pre><code>str9.rtc.gettime( format )</code></pre>
+<p>Gets the time kept by the Real Time Clock.</p>
+<p><b>Arguments</b>: <b>format</b> - the string '*s' to return the time as a string 'hh:mm:ss' or '*t' to return as a Lua table with string fields 'hour', 'min' and 'sec'.</p>
+<p><b>Returns</b>: a string or a Lua table, according to the format argument.</p>
+
+<a name="str9.rtc.setdate" /><pre><code>str9.rtc.setdate( date )</code></pre>
+<p>Sets the Real Time Clock date to a specific date.</p>
+<p><b>Arguments</b>: <b>date</b> - a string in the format 'dd/mm/yyyy' or a Lua table with 'day', 'month' and 'year' string fields.</p>
+<p><b>Returns</b>: nothing.</p>
+
+<a name="str9.rtc.getdate" /><pre><code>str9.rtc.getdate( format )</code></pre>
+<p>Gets the date kept by the Real Time Clock.</p>
+<p><b>Arguments</b>: <b>format</b> - the string '*s' to return the date as a string 'dd/mm/yyyy' or '*t' to return as a Lua table with string fields 'day', 'month' and 'year'.</p>
+<p><b>Returns</b>: a string or a Lua table, according to the format argument.</p>
+
+</div>
+$$FOOTER$$

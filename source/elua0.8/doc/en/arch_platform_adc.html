@@ -1,0 +1,41 @@
+$$HEADER$$
+<a name="overview" /><h3>Overview</h3>
+<p>This part of the platform interface groups functions related to the ADC interface(s) of the MCU.</p>
+
+<a name="funcs" /><h3>Functions</h3>
+<div class="docdiv">
+<a name="platform_adc_exists" /><pre><code>int platform_adc_exists( unsigned id );</code></pre>
+<p>Checks if the platform has the hardware ADC specified as argument. Implemented in <i>src/common.c</i>, it uses the <b>NUM_ADC</b> macro that must be defined in the   platform's <b>platform_conf.h</b> file (see <a href="arch_overview.html#platforms">here</a> for details). For example:</p>   <pre class="code">#define NUM_ADC   1      <b>// The platform has 1 ADC interface</b></pre>
+<p><b>Arguments</b>: <b>id</b> - ADC interface ID</p>
+<p><b>Returns</b>: 1 if the ADC interface exists, 0 otherwise</p>
+
+<a name="platform_adc_op" /><pre><code>u32 platform_adc_op( unsigned id, int op, u32 data );</code></pre>
+<p>Executes an operation on an ADC channel</p>
+<p><b>Arguments</b>: </p>
+<ul>
+  <li><b>id</b> - ADC channel ID</li>
+  <li><b>op</b> - the operation that must be executed. It can take any value from <a href="#adc_operations">this enum</a>, as follows:   <ul>     <li><b>PLATFORM_ADC_GET_MAXVAL</b>: get the maximum conversion value the channel may supply (based on channel resolution)</li>     <li><b>PLATFORM_ADC_SET_SMOOTHING</b>: sets the length of the moving average smoothing filter to <b>data</b> </li>       <li><b>PLATFORM_ADC_SET_BLOCKING</b>: sets whether or not sample requests should block, waiting for additional samples</li>     <li><b>PLATFORM_ADC_IS_DONE</b>: checks whether sampling has completed</li>     <li><b>PLATFORM_ADC_OP_SET_TIMER</b>: selects a timer to control sampling frequency</li>     <li><b>PLATFORM_ADC_OP_SET_CLOCK</b>: set the frequency of sample acquisition</li>   </ul></li>
+  <li><b>data</b> - when used with <b>op</b> == <b>PLATFORM_ADC_SET_SMOOTHING</b>, specifies the length of the moving average filter (must be a power of 2). If it is 1, filter is disabled.</li>
+  <li><b>data</b> - when used with <b>op</b> == <b>PLATFORM_ADC_SET_BLOCKING</b>, specifies whether or not sample requests block.  If 1, requests will block until enough samples are available or sampling has ended. If 0, requests will return immediately with up to the number of samples requested.</li>
+  <li><b>data</b> - when used with <b>op</b> == <b>PLATFORM_ADC_OP_SET_TIMER</b>, specifies the timer to use to control sampling frequency.</li>
+  <li><b>data</b> - when used with <b>op</b> == <b>PLATFORM_ADC_OP_SET_CLOCK</b>, specifies the frequency of sample collection in Hz (number of samples per second). If 0, timer is not used and samples are acquired as quickly as possible.</li>
+</ul>
+<p><b>Returns</b>: </p>
+<ul>
+  <li>the maximum possible conversion value when <b>op</b> == <b>PLATFORM_ADC_GET_MAXVAL</b></li>
+  <li>whether or not sampling has completed (1: yes, 0: no) when <b>op</b> == <b>PLATFORM_ADC_IS_DONE</b>. This will return 1 (yes), if no samples have been requested.</li>
+  <li>the actual frequency of acquisition that will be used when <b>op</b> == <b>PLATFORM_ADC_OP_SET_CLOCK</b></li>
+  <li>irellevant for other operations</li>
+</ul>
+
+<a name="platform_adc_check_timer_id" /><pre><code>int platform_adc_check_timer_id( unsigned id, unsigned timer_id );</code></pre>
+<p>Checks whether a timer may be used with a particular ADC channel</p>
+<p><b>Arguments</b>: </p>
+<ul>
+  <li><b>id</b> - ADC channel ID</li>
+  <li><b>timer_id</b> - Timer ID</li>
+</ul>
+<p><b>Returns</b>: 1 if the timer may be used to trigger the ADC channel, 0 if not</p>
+
+</div>
+$$FOOTER$$
